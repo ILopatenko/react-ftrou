@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Page from "./Page";
 import axios from "axios";
 import { withRouter } from "react-router";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
+
 const CreatePost = (props) => {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/create-post", { title, body, token: localStorage.getItem("complexAppToken") });
+      const response = await axios.post("/create-post", { title, body, token: appState.user.token });
       console.log("POST WAS CREATED!");
       //ADD a GLASH message
-      props.addFlashMessage("NEW POS WAS CREATED!!!");
+      appDispatch({ type: "flashMessage", value: "A new post was created!" });
+
       //REDIRECT to a new post
       props.history.push(`/post/${response.data}`);
     } catch (error) {

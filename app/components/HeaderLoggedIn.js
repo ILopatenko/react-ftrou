@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
 const HeaderLoggedIn = (props) => {
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
   const handleLoguot = () => {
-    props.setLoggedIn(false);
-    localStorage.removeItem("complexAppToken");
-    localStorage.removeItem("complexAppUsername");
-    localStorage.removeItem("complexAppAvatar");
+    appDispatch({ type: "logout" });
   };
   return (
     <div className="flex-row my-3 my-md-0">
@@ -18,7 +19,7 @@ const HeaderLoggedIn = (props) => {
         <span className="chat-count-badge text-white"> </span>
       </span>
       <a href="#" className="mr-2">
-        <img className="small-header-avatar" src={localStorage.getItem("complexAppAvatar")} />
+        <img className="small-header-avatar" src={appState.user.avatar} />
       </a>
       <Link to="/create-post" className="btn btn-sm btn-success mr-2">
         Create Post

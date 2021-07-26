@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import DispatchContext from "../DispatchContext";
 
 const HeaderLoggedOut = (props) => {
+  const appDispatch = useContext(DispatchContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -11,10 +13,8 @@ const HeaderLoggedOut = (props) => {
       const response = await axios.post("/login", { username, password });
       if (response.data) {
         console.log(response.data);
-        localStorage.setItem("complexAppToken", response.data.token);
-        localStorage.setItem("complexAppUsername", response.data.username);
-        localStorage.setItem("complexAppAvatar", response.data.avatar);
-        props.setLoggedIn(true);
+
+        appDispatch({ type: "login", data: response.data });
       } else {
         console.log("Incorrect credentials");
       }
