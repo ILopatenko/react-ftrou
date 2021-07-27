@@ -14,11 +14,13 @@ import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
+import Profile from "./components/Profile";
 //axios
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 //Immer
 import { useImmerReducer } from "use-immer";
+
 const Main = () => {
   //Create an initial state to use with useReducer() hook
   const initialStateForReducer = {
@@ -64,6 +66,9 @@ const Main = () => {
           <FlashMessages messages={state.flashMessages} />
           <Header />
           <Switch>
+            <Route path="/profile/:username" exact>
+              <Profile />
+            </Route>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
             </Route>
