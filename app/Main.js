@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ReactDOM from "react-dom";
+import { CSSTransition } from "react-transition-group";
 //Components
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -17,6 +18,7 @@ import DispatchContext from "./DispatchContext";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
+import Search from "./components/Search";
 //axios
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
@@ -33,6 +35,7 @@ const Main = () => {
       username: localStorage.getItem("complexAppUsername"),
       avatar: localStorage.getItem("complexAppAvatar"),
     },
+    isSearchOpen: false,
   };
   //Create a function for useReducer() hook
   const myReducer = (draft, action) => {
@@ -46,6 +49,12 @@ const Main = () => {
         break;
       case "flashMessage":
         draft.flashMessages.push(action.value);
+        break;
+      case "openSearch":
+        draft.isSearchOpen = true;
+        break;
+      case "closeSearch":
+        draft.isSearchOpen = false;
         break;
     }
   };
@@ -71,28 +80,38 @@ const Main = () => {
             <Route path="/profile/:username" exact>
               <Profile />
             </Route>
+
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
             </Route>
+
             <Route path="/about" exact>
               <About />
             </Route>
+
             <Route path="/create-post" exact>
               <CreatePost />
             </Route>
+
             <Route path="/post/:id" exact>
               <ViewSinglePost />
             </Route>
+
             <Route path="/post/:id/edit" exact>
               <EditPost />
             </Route>
+
             <Route path="/terms" exact>
               <Terms />
             </Route>
+
             <Route>
               <NotFound />
             </Route>
           </Switch>
+          <CSSTransition timeout={300} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
