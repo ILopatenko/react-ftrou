@@ -15,6 +15,8 @@ import FlashMessages from "./components/FlashMessages";
 import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
 import Profile from "./components/Profile";
+import EditPost from "./components/EditPost";
+import NotFound from "./components/NotFound";
 //axios
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
@@ -81,8 +83,14 @@ const Main = () => {
             <Route path="/post/:id" exact>
               <ViewSinglePost />
             </Route>
+            <Route path="/post/:id/edit" exact>
+              <EditPost />
+            </Route>
             <Route path="/terms" exact>
               <Terms />
+            </Route>
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
           <Footer />
