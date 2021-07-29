@@ -19,6 +19,7 @@ import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
+import Chat from "./components/Chat";
 //axios
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
@@ -36,6 +37,8 @@ const Main = () => {
       avatar: localStorage.getItem("complexAppAvatar"),
     },
     isSearchOpen: false,
+    isChatOpen: false,
+    unreadChatCount: 0,
   };
   //Create a function for useReducer() hook
   const myReducer = (draft, action) => {
@@ -55,6 +58,18 @@ const Main = () => {
         break;
       case "closeSearch":
         draft.isSearchOpen = false;
+        break;
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen;
+        break;
+      case "closeChat":
+        draft.isChatOpen = false;
+        break;
+      case "incrementUnreadChatCount":
+        draft.unreadChatCount++;
+        break;
+      case "clearUnreadChatCount":
+        draft.unreadChatCount = 0;
         break;
     }
   };
@@ -112,6 +127,7 @@ const Main = () => {
           <CSSTransition timeout={300} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

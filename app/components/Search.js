@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from "react";
 import DispatchContext from "../DispatchContext";
 import { useImmer } from "use-immer";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import Post from "./Post";
 const Search = (props) => {
   const appDispatch = useContext(DispatchContext);
