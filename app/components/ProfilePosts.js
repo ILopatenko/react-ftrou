@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import LoadindDotsIcon from "./LoadindDotsIcon";
+import LoadingDotsIcon from "./LoadingDotsIcon";
 import Page from "./Page";
 
 const ProfilePosts = (props) => {
@@ -28,7 +28,7 @@ const ProfilePosts = (props) => {
   if (isLoading) {
     return (
       <Page title="Loading ...">
-        <LoadindDotsIcon />
+        <LoadingDotsIcon />
       </Page>
     );
   } else {

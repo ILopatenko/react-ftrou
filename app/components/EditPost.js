@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useContext } from "react";
 import Page from "./Page";
 import { useParams, Link, withRouter } from "react-router-dom";
-import LoadindDotsIcon from "./LoadindDotsIcon";
+import LoadingDotsIcon from "./LoadingDotsIcon";
 import StateContext from "../StateContext";
 import { useImmerReducer } from "use-immer";
 import DispatchContext from "../DispatchContext";
@@ -126,13 +126,13 @@ const EditPost = (props) => {
   if (state.isFetching) {
     return (
       <Page title="Loading ...">
-        <LoadindDotsIcon />
+        <LoadingDotsIcon />
       </Page>
     );
   } else {
     return (
       <Page title="Edit post">
-        <Link className="small font-weight-bold" to={`post/${state.id}`}>
+        <Link className="small font-weight-bold" to={`/post/${state.id}`}>
           &laquo; Back to post
         </Link>
         <form className="mt-3" onSubmit={submitHandler}>
