@@ -77,7 +77,7 @@ const Main = () => {
           <FlashMessages messages={state.flashMessages} />
           <Header />
           <Switch>
-            <Route path="/profile/:username" exact>
+            <Route path="/profile/:username">
               <Profile />
             </Route>
 
@@ -85,23 +85,23 @@ const Main = () => {
               {state.loggedIn ? <Home /> : <HomeGuest />}
             </Route>
 
-            <Route path="/about" exact>
+            <Route path="/about">
               <About />
             </Route>
 
-            <Route path="/create-post" exact>
+            <Route path="/create-post">
               <CreatePost />
             </Route>
 
-            <Route path="/post/:id" exact>
+            <Route path="/post/:id">
               <ViewSinglePost />
             </Route>
 
-            <Route path="/post/:id/edit" exact>
+            <Route path="/post/:id/edit">
               <EditPost />
             </Route>
 
-            <Route path="/terms" exact>
+            <Route path="/terms">
               <Terms />
             </Route>
 

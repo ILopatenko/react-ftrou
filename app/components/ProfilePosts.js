@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 import Page from "./Page";
+import Post from "./Post";
 
 const ProfilePosts = (props) => {
   const { username } = useParams();
@@ -35,14 +36,7 @@ const ProfilePosts = (props) => {
     return (
       <div className="list-group">
         {posts.map((post) => {
-          const date = new Date(post.createdDate);
-          const dateFormated = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-          return (
-            <Link to={`/post/${post._id}`} className="list-group-item list-group-item-action" key={post._id}>
-              <img className="avatar-tiny" src={post.author.avatar} /> <strong> {post.title} </strong>
-              <span className="text-muted small">on {dateFormated} </span>
-            </Link>
-          );
+          return <Post noAuthor={true} key={post._id} post={post} />;
         })}
       </div>
     );

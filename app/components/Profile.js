@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink, Switch, Route } from "react-router-dom";
 import Page from "./Page";
 import StateContext from "../StateContext";
 import axios from "axios";
 import ProfilePosts from "./ProfilePosts";
+import ProfileFollowers from "./ProfileFollowers";
+import ProfileFollowing from "./ProfileFollowing";
 import { useImmer } from "use-immer";
 
 const Profile = () => {
@@ -23,18 +25,20 @@ const Profile = () => {
       },
     },
   });
+
   //Destructuring username from parameters to work with /profile/${username} templates
   const { username } = useParams();
 
   //appState - global app level state
   const appState = useContext(StateContext);
 
-  //Fetch user's profile data from derver (with handle a cancelled request)
+  //Fetch user's profile data from server (with handle a cancelled request)
   useEffect(() => {
     const ourRequest = axios.CancelToken.source();
     const fetchData = async () => {
       try {
         const response = await axios.post(`/profile/${username}`, { token: appState.user.token }, { cancelToken: ourRequest.token });
+
         setState((draft) => {
           draft.profileData = response.data;
         });
@@ -51,7 +55,7 @@ const Profile = () => {
   //when button FOLLOW will be pushed - handler will change state.startFollowingCount
   // - and because of it this useEffect() hook will refetch data about user's profile from a server
   useEffect(() => {
-    if (state.startFollowingRequestCount > 0) {
+    if (state.startFollowingRequestCount) {
       setState((draft) => {
         draft.followActionLoading = true;
       });
@@ -78,7 +82,7 @@ const Profile = () => {
   //when button STOP FOLLOW will be pushed - handler will change state.startFollowingCount
   // - and because of it this useEffect() hook will refetch data about user's profile from a server
   useEffect(() => {
-    if (state.stopFollowingRequestCount > 0) {
+    if (state.stopFollowingRequestCount) {
       setState((draft) => {
         draft.followActionLoading = true;
       });
@@ -132,17 +136,27 @@ const Profile = () => {
         )}
       </h2>
       <div className="profile-nav nav nav-tabs pt-2 mb-4">
-        <a href="#" className="active nav-item nav-link">
-          Posts: {state.profileData.counts.postCount}{" "}
-        </a>
-        <a href="#" className="nav-item nav-link">
-          Followers: {state.profileData.counts.followerCount}{" "}
-        </a>
-        <a href="#" className="nav-item nav-link">
-          Following: {state.profileData.counts.followingCount}{" "}
-        </a>
+        <NavLink exact to={`/profile/${state.profileData.profileUsername}`} className="nav-item nav-link">
+          Posts: {state.profileData.counts.postCount}
+        </NavLink>
+        <NavLink to={`/profile/${state.profileData.profileUsername}/followers`} className="nav-item nav-link">
+          Followers: {state.profileData.counts.followerCount}
+        </NavLink>
+        <NavLink to={`/profile/${state.profileData.profileUsername}/following`} className="nav-item nav-link">
+          Following: {state.profileData.counts.followingCount}
+        </NavLink>
       </div>
-      <ProfilePosts />
+      <Switch>
+        <Route exact path="/profile/:username">
+          <ProfilePosts />
+        </Route>
+        <Route path="/profile/:username/followers">
+          <ProfileFollowers />
+        </Route>
+        <Route path="/profile/:username/following">
+          <ProfileFollowing />
+        </Route>
+      </Switch>
     </Page>
   );
 };
