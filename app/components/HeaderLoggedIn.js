@@ -9,6 +9,7 @@ const HeaderLoggedIn = (props) => {
   const appState = useContext(StateContext);
   const handleLoguot = () => {
     appDispatch({ type: "logout" });
+    appDispatch({ type: "flashMessage", value: "You have logged out!" });
   };
   const handleSearchIcon = (e) => {
     e.preventDefault();

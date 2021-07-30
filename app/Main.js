@@ -85,6 +85,26 @@ const Main = () => {
       localStorage.removeItem("complexAppAvatar", state.user.avatar);
     }
   }, [state.loggedIn]);
+
+  //useEffect to check token (depend on [])
+  useEffect(async () => {
+    if (state.loggedIn) {
+      const ourRequest = axios.CancelToken.source();
+      const fetchResults = async () => {
+        try {
+          const response = await axios.post("/checkToken", { token: state.user.token }, { cancelToken: ourRequest.token });
+          if (!response.data) {
+            dispatch({ type: "logout" });
+            dispatch({ type: "flashMessage", value: "You need to log in again!" });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchResults();
+      return () => ourRequest.cancel;
+    }
+  }, []);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
