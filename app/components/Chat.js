@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 //Socket.io
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:8080");
+const socket = io(process.env.BACKENDURL || "https://bes-react.herokuapp.com");
 
 const Chat = () => {
   //useImmer() for chat
